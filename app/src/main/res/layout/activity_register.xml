@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="#1273DC"
+        android:id="@+id/layout_register"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_height="200dp">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="Wheels"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textStyle="italic"
+            android:textSize="18sp"
+            android:padding="4dp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="Register"/>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/register_fields"
+        android:padding="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/layout_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/fullName_field_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="42dp"
+            android:layout_marginVertical="8dp"
+            android:drawableRight="@drawable/ic_baseline_person_24"
+            android:hint="Enter Full name"/>
+
+        <EditText
+            android:id="@+id/email_field_register"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="42dp"
+            android:layout_marginVertical="8dp"
+            android:drawableRight="@drawable/ic_baseline_mail_24"
+            android:hint="Enter email address"/>
+
+        <EditText
+            android:id="@+id/password_field_register"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="42dp"
+            android:layout_marginVertical="8dp"
+            android:drawableRight="@drawable/ic_baseline_vpn_key_24"
+            android:hint="Enter password"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/userType_rg"
+            android:layout_marginHorizontal="64dp"
+            android:weightSum="3"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/userType_businessOwner"
+                android:layout_width="wrap_content"
+                android:text="Business owner"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <RadioButton
+                android:id="@+id/userType_client"
+                android:layout_width="wrap_content"
+                android:text="Client"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"/>
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btn_signup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="#094F9C"
+            android:text="Register"
+            android:layout_marginHorizontal="42dp"
+            android:layout_marginVertical="8dp"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

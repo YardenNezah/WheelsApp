@@ -1,6 +1,8 @@
 package com.example.wheelsapp.models;
 
 public class WheelsService {
+
+
     private long serviceDate;
     private String serviceType;
     private double servicePrice;

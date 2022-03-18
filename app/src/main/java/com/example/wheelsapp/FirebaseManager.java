@@ -1,4 +1,5 @@
 package com.example.wheelsapp;
+import com.example.wheelsapp.interfaces.OnWheelsAllBusinessesListener;
 import com.example.wheelsapp.interfaces.OnWheelsBusinessListener;
 import com.example.wheelsapp.interfaces.OnWheelsServicesListener;
 import com.example.wheelsapp.interfaces.OnWheelsUserListener;
@@ -57,6 +58,22 @@ public class FirebaseManager {
                     }else {
                         listener.onFailure(new Exception("Business not found"));
                     }
+                }).addOnFailureListener(listener::onFailure);
+    }
+
+
+    public void getAllWheelsBusinesses(OnWheelsAllBusinessesListener listener) {
+        businesses_ref
+                .get()
+                .addOnSuccessListener(dataSnapshot -> {
+                    List<WheelsBusiness> list = new ArrayList<>();
+                    WheelsBusiness next;
+                    for(DataSnapshot child : dataSnapshot.getChildren()) {
+                        next = child.getValue(WheelsBusiness.class);
+                        if(next!=null)
+                        list.add(next);
+                    }
+                    listener.onSuccess(list);
                 }).addOnFailureListener(listener::onFailure);
     }
 

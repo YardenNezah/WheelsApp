@@ -6,6 +6,9 @@
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_forgotpass.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/business_item.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_business_list.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_schedule.xml" value="0.1" />
       </map>
     </option>
   </component>

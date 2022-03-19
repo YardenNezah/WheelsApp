@@ -57,7 +57,14 @@
             android:layout_marginVertical="8dp"
             android:drawableRight="@drawable/ic_baseline_person_24"
             android:hint="Enter Full name"/>
-
+        <EditText
+            android:id="@+id/phone_field_register"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="42dp"
+            android:layout_marginVertical="8dp"
+            android:drawableRight="@drawable/ic_baseline_phone_enabled_24"
+            android:hint="Enter phone Number"/>
         <EditText
             android:id="@+id/email_field_register"
             android:layout_width="match_parent"

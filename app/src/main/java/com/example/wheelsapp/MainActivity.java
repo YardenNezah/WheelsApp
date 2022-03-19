@@ -4,8 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.wheelsapp.fragments.BusinessListFragment;
-import com.example.wheelsapp.fragments.ScheduleFragment;
+import com.example.wheelsapp.fragments.BookingFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new BusinessListFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new BookingFragment()).commit();
 
 
 

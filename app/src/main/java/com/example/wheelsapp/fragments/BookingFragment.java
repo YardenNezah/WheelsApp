@@ -16,13 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wheelsapp.FirebaseManager;
 import com.example.wheelsapp.R;
-import com.example.wheelsapp.interfaces.OnWheelsAllBusinessesListener;
+import com.example.wheelsapp.interfaces.OnWheelsBusinessBookingsListener;
 import com.example.wheelsapp.models.WheelsBusiness;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class BusinessListFragment extends Fragment {
+public class BookingFragment extends Fragment {
 
 
     private RecyclerView rvBusinessList;
@@ -40,7 +40,7 @@ public class BusinessListFragment extends Fragment {
         rvBusinessList = view.findViewById(R.id.rvBusinessList);
         rvBusinessList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        FirebaseManager.instance.getAllWheelsBusinesses(new OnWheelsAllBusinessesListener() {
+        FirebaseManager.instance.getAllWheelsBusinesses(new OnWheelsBusinessBookingsListener() {
             @Override
             public void onSuccess(List<WheelsBusiness> allBusinesses) {
                 BusinessListRvAdapter adapter = new BusinessListRvAdapter(allBusinesses);

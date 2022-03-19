@@ -1,6 +1,5 @@
 package com.example.wheelsapp.activities.auth;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,9 +10,6 @@ import androidx.annotation.Nullable;
 import com.example.wheelsapp.FirebaseManager;
 import com.example.wheelsapp.R;
 import com.example.wheelsapp.WheelsActivity;
-import com.example.wheelsapp.models.WheelsUser;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends WheelsActivity {

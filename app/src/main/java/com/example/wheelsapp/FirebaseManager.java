@@ -1,12 +1,13 @@
 package com.example.wheelsapp;
-import com.example.wheelsapp.interfaces.OnWheelsAllBusinessesListener;
+import com.example.wheelsapp.interfaces.OnWheelsBusinessBookingsListener;
 import com.example.wheelsapp.interfaces.OnWheelsBusinessListener;
 import com.example.wheelsapp.interfaces.OnWheelsServicesListener;
-import com.example.wheelsapp.interfaces.OnWheelsUserListener;
+import com.example.wheelsapp.interfaces.OnWheelsCustomerListener;
 import com.example.wheelsapp.interfaces.WheelsListener;
+import com.example.wheelsapp.models.Booking;
 import com.example.wheelsapp.models.WheelsBusiness;
+import com.example.wheelsapp.models.WheelsCustomer;
 import com.example.wheelsapp.models.WheelsService;
-import com.example.wheelsapp.models.WheelsUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,80 +21,48 @@ public class FirebaseManager {
     private FirebaseManager() {}
 
     public static FirebaseManager instance = new FirebaseManager();
-    private WheelsUser currentUser;
 
-    private final DatabaseReference users_ref = FirebaseDatabase.getInstance().getReference("users");
+    private final DatabaseReference customers_ref = FirebaseDatabase.getInstance().getReference("users");
     private final DatabaseReference businesses_ref = FirebaseDatabase.getInstance().getReference("businesses");
-    private final DatabaseReference services_ref = FirebaseDatabase.getInstance().getReference("services");
-
-    public void getCurrentWheelsUser(OnWheelsUserListener listener) {
-        if(currentUser!=null)
-            listener.onSuccess(currentUser);
-        else getWheelsUser(listener);
-    }
-
-    public void getWheelsUser(OnWheelsUserListener listener) {
+    private final DatabaseReference bookings_ref = FirebaseDatabase.getInstance().getReference("services");
+    public void getWheelsCustomer(String uid, OnWheelsCustomerListener listener) {
         assert FirebaseAuth.getInstance().getUid() !=null;
-        users_ref.child(FirebaseAuth.getInstance().getUid())
+        customers_ref.child(uid)
                 .get()
                 .addOnSuccessListener(dataSnapshot -> {
-                    WheelsUser u = dataSnapshot.getValue(WheelsUser.class);
-                    if(u!=null) {
-                       listener.onSuccess(u);
-                       this.currentUser = u;
-                    }else {
-                        listener.onFailure(new Exception("User not found"));
-                    }
+                    WheelsCustomer u = dataSnapshot.getValue(WheelsCustomer.class);
+                    listener.onSuccess(u);
                 }).addOnFailureListener(listener::onFailure);
     }
 
-    public void getWheelsBusiness(String businessProviderId, OnWheelsBusinessListener listener) {
-        assert businessProviderId !=null;
-        businesses_ref.child(businessProviderId)
+    public void getWheelsBusiness(String bid, OnWheelsBusinessListener listener) {
+        assert bid !=null;
+        businesses_ref.child(bid)
                 .get()
                 .addOnSuccessListener(dataSnapshot -> {
                     WheelsBusiness b = dataSnapshot.getValue(WheelsBusiness.class);
                     if(b!=null) {
                         listener.onSuccess(b);
                     }else {
-                        listener.onFailure(new Exception("Business not found"));
+                        listener.onFailure(new Exception("Business with id " +  bid +" not found"));
                     }
                 }).addOnFailureListener(listener::onFailure);
     }
 
 
-    public void getAllWheelsBusinesses(OnWheelsAllBusinessesListener listener) {
+    public void getAllBusinessBookings(String bid,OnWheelsBusinessBookingsListener listener) {
         businesses_ref
+                .child(bid)
                 .get()
                 .addOnSuccessListener(dataSnapshot -> {
-                    List<WheelsBusiness> list = new ArrayList<>();
-                    WheelsBusiness next;
+                    List<Booking> list = new ArrayList<>();
+                    Booking next;
                     for(DataSnapshot child : dataSnapshot.getChildren()) {
-                        next = child.getValue(WheelsBusiness.class);
+                        next = child.getValue(Booking.class);
                         if(next!=null)
                         list.add(next);
                     }
                     listener.onSuccess(list);
-                }).addOnFailureListener(listener::onFailure);
-    }
-
-    public void getWheelsServices(OnWheelsServicesListener listener) {
-        assert FirebaseAuth.getInstance().getUid() !=null;
-        services_ref.child(FirebaseAuth.getInstance().getUid())
-                .get()
-                .addOnSuccessListener(dataSnapshot -> {
-                    List<WheelsService> list = new ArrayList<>();
-                    WheelsService s;
-                    for(DataSnapshot serviceSnap : dataSnapshot.getChildren()) {
-                        s = serviceSnap.getValue(WheelsService.class);
-                        if(s!=null)
-                            list.add(s);
-                    }
-                    if(list.size() > 0) {
-                        listener.onSuccess(list);
-                    }else {
-                        listener.onFailure(new Exception("Services for "+ FirebaseAuth.getInstance().getCurrentUser().getEmail() + " were not found"));
-                    }
                 }).addOnFailureListener(listener::onFailure);
     }
 
@@ -102,49 +71,76 @@ public class FirebaseManager {
         businesses_ref.child(FirebaseAuth.getInstance().getUid())
                 .setValue(business);
     }
-    public void saveUser(WheelsUser user) {
-        assert FirebaseAuth.getInstance().getUid() !=null;
-        users_ref.child(FirebaseAuth.getInstance().getUid())
+    public void saveCustomer (String uid, WheelsCustomer user) {
+        customers_ref.child(uid)
                 .setValue(user);
     }
-    public void saveService(WheelsService service) {
-        assert FirebaseAuth.getInstance().getUid() !=null;
-        services_ref.child(FirebaseAuth.getInstance().getUid())
+
+    public void saveBooking(String bid, Booking service) {
+        assert bid !=null;
+        bookings_ref.child(bid)
                 .push()
                 .setValue(service);
     }
 
-    public void createNewAuthUser(String fullName,
+
+   //@TODO : Create a new customer
+    public void createNewCustomer(String fullName,
                                   String email,
+                                  String phoneNumber,
                                   String password,
-                                  boolean businessOwner,
-                                  WheelsListener<FirebaseUser> listener) {
+                                  WheelsListener<WheelsCustomer> listener) {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
                 .addOnSuccessListener(authResult -> {
-                    listener.onSuccess(authResult.getUser());
-                    WheelsUser newUser = new WheelsUser(email,fullName,businessOwner);
-                    saveUser(newUser);
+
+                    WheelsCustomer newUser = new WheelsCustomer(email,fullName,phoneNumber);
+
+                   // saveCustomer(new);
+                    listener.onSuccess(newUser);
                 }).addOnFailureListener(listener::onFailure);
     }
 
-    public void signInUser(String email,String password,WheelsListener<WheelsUser> listener) {
+
+    // Signs in a customer by email pass
+    public void signInCustomer(String email,String password,WheelsListener<WheelsCustomer> listener) {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
                 .addOnSuccessListener(authResult -> {
                     if(authResult.getUser()!=null) {
-                        getWheelsUser(new OnWheelsUserListener() {
+                        getWheelsCustomer(authResult.getUser().getUid(), new OnWheelsCustomerListener() {
                             @Override
                             public void onFailure(Exception e) {
                                 listener.onFailure(e);
                             }
 
                             @Override
-                            public void onSuccess(WheelsUser user) {
-                                listener.onSuccess(user);
+                            public void onSuccess(WheelsCustomer customer) {
+                                listener.onSuccess(customer);
                             }
                         });
-                    }
+                    }else {    listener.onFailure(new Exception("Something happened while fetching customer")); }
                 }).addOnFailureListener(listener::onFailure);
     }
+    // Signs in a business by email pass
+    public void signInBusiness(String email,String password,WheelsListener<WheelsBusiness> listener) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
+                .addOnSuccessListener(authResult -> {
+                    if(authResult.getUser()!=null) {
+                        getWheelsBusiness(authResult.getUser().getUid(), new OnWheelsBusinessListener() {
+                            @Override
+                            public void onSuccess(WheelsBusiness business) {
+                                listener.onSuccess(business);
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                listener.onFailure(e);
+                            }
+                        });
+
+                    }else {    listener.onFailure(new Exception("Something happened while fetching customer")); }
+                }).addOnFailureListener(listener::onFailure);
+    }
+
 
 
 

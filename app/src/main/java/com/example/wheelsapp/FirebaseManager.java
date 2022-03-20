@@ -1,18 +1,31 @@
 package com.example.wheelsapp;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+
+import androidx.annotation.NonNull;
+
 import com.example.wheelsapp.interfaces.OnWheelsBusinessBookingsListener;
 import com.example.wheelsapp.interfaces.OnWheelsBusinessListener;
 import com.example.wheelsapp.interfaces.OnWheelsServicesListener;
 import com.example.wheelsapp.interfaces.OnWheelsCustomerListener;
 import com.example.wheelsapp.interfaces.WheelsListener;
 import com.example.wheelsapp.models.Booking;
+import com.example.wheelsapp.models.LatLng;
 import com.example.wheelsapp.models.WheelsBusiness;
 import com.example.wheelsapp.models.WheelsCustomer;
 import com.example.wheelsapp.models.WheelsService;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,9 +79,10 @@ public class FirebaseManager {
                 }).addOnFailureListener(listener::onFailure);
     }
 
-    public void saveBusiness(WheelsBusiness business) {
-        assert FirebaseAuth.getInstance().getUid() !=null;
-        businesses_ref.child(FirebaseAuth.getInstance().getUid())
+
+    // saves a business by owner id (Firebase user uid)
+    public void saveBusinessWithBusinessOwner(String oid, WheelsBusiness business) {
+        businesses_ref.child(oid)
                 .setValue(business);
     }
     public void saveCustomer (String uid, WheelsCustomer user) {
@@ -84,7 +98,28 @@ public class FirebaseManager {
     }
 
 
-   //@TODO : Create a new customer
+    public void createNewBusiness(String email, String password, String bName, String bPhoneNumber, LatLng coordinates,
+                                  Uri image, OnWheelsBusinessListener listener) {
+
+
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
+                .addOnSuccessListener(authResult -> {
+                    if(authResult.getUser()!= null) {
+                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("/images/businesses/ " + authResult.getUser().getUid());
+                        storageReference.putFile(image)
+                                .addOnSuccessListener(taskSnapshot -> storageReference.getDownloadUrl()
+                                        .addOnSuccessListener(uri -> {
+                                            WheelsBusiness wheelsBusiness = new WheelsBusiness(bPhoneNumber,bName,coordinates,uri.toString(),email,authResult.getUser().getUid());
+                                            saveBusinessWithBusinessOwner(authResult.getUser().getUid(),wheelsBusiness);
+                                            listener.onSuccess(wheelsBusiness);
+                                        }).addOnFailureListener(listener::onFailure)).addOnFailureListener(listener::onFailure);
+
+                    }
+                }).addOnFailureListener(listener::onFailure);
+
+    }
+
+
     public void createNewCustomer(String fullName,
                                   String email,
                                   String phoneNumber,
@@ -92,11 +127,11 @@ public class FirebaseManager {
                                   WheelsListener<WheelsCustomer> listener) {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
                 .addOnSuccessListener(authResult -> {
-
-                    WheelsCustomer newUser = new WheelsCustomer(email,fullName,phoneNumber);
-
-                   // saveCustomer(new);
-                    listener.onSuccess(newUser);
+                    if(authResult.getUser()!= null ) {
+                        WheelsCustomer newUser = new WheelsCustomer(email, fullName, phoneNumber);
+                        saveCustomer(authResult.getUser().getUid(),newUser);
+                        listener.onSuccess(newUser);
+                    }
                 }).addOnFailureListener(listener::onFailure);
     }
 

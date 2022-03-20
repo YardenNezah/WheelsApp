@@ -14,14 +14,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WheelsApp">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key"/>
         <activity
-            android:name=".activities.auth.LoginActivity"
+            android:name=".activities.auth.LoginFragment"
             android:exported="true">
 
         </activity>
 
         <activity
-            android:name=".activities.auth.RegisterActivity"
+            android:name=".activities.auth.ClientRegistrationFragment"
             android:exported="true"/>
 
         <activity

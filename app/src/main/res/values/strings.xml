@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WheelsApp</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA9P6IsbmS6EwS-ysdJi_GRKGxbGU8b3RY</string>
 </resources>

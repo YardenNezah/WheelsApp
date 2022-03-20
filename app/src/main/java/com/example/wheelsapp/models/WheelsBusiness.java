@@ -9,19 +9,29 @@ public class WheelsBusiness {
     private String email;
     private String ownerId;
 
-    public WheelsBusiness(String businessId,String name, LatLng latLng, String image,
+    private String phoneNumber;
+
+    public WheelsBusiness(String phoneNumber, String businessName, LatLng latLng, String image,
                           String email,String ownerId) {
-        this.name = name;
+        this.name = businessName;
         this.latLng = latLng;
         this.image = image;
         this.email = email;
-        this.businessId = businessId;
+        this.phoneNumber = phoneNumber;
         this.ownerId = ownerId;
     }
 
     // firebase constructor
     public WheelsBusiness(){
 
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getOwnerId() {

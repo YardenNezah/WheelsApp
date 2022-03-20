@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/auth_nav_graph"
+    app:startDestination="@id/loginFragment">
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.wheelsapp.activities.auth.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_clientRegistrationFragment"
+            app:destination="@id/clientRegistrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_businessRegistrationFragment2"
+            app:destination="@id/businessRegistrationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/businessRegistrationFragment"
+        android:name="com.example.wheelsapp.activities.auth.BusinessRegistrationFragment"
+        android:label="BusinessRegistrationFragment" />
+    <fragment
+        android:id="@+id/clientRegistrationFragment"
+        android:name="com.example.wheelsapp.activities.auth.ClientRegistrationFragment"
+        android:label="ClientRegistrationFragment" />
+</navigation>

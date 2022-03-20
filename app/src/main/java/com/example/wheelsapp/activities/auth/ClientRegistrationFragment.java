@@ -11,6 +11,7 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.wheelsapp.FirebaseManager;
 import com.example.wheelsapp.R;
@@ -39,7 +40,7 @@ public class ClientRegistrationFragment extends WheelsFragment {
         emailEt = view.findViewById(R.id.email_field_register);
         passEt = view.findViewById(R.id.password_field_register);
         fullNameEt = view.findViewById(R.id.fullName_field_login);
-        registerBtn = view.findViewById(R.id.btn_signup);
+        registerBtn = view.findViewById(R.id.btn_signup_client_action);
         phoneEt = view.findViewById(R.id.phone_field_register);
         moveToBusinessRegistration = view.findViewById(R.id.move_to_business_registration_btn);
         moveToBusinessRegistration.setOnClickListener((v) -> {
@@ -58,7 +59,7 @@ public class ClientRegistrationFragment extends WheelsFragment {
 
                             @Override
                             public void onSuccess(WheelsCustomer user) {// TODO: Save User Locally (?)
-                                Navigation.findNavController(view).popBackStack();
+                                NavHostFragment.findNavController(ClientRegistrationFragment.this).popBackStack();
                             }
                         });
 

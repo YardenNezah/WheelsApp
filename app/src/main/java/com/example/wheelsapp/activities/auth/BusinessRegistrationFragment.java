@@ -10,6 +10,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.wheelsapp.FirebaseManager;
 import com.example.wheelsapp.R;
@@ -38,7 +39,7 @@ public class BusinessRegistrationFragment extends WheelsFragment {
         emailEt = view.findViewById(R.id.email_field_register);
         passEt = view.findViewById(R.id.password_field_register);
         businessNameEt = view.findViewById(R.id.businessName_field_register);
-        registerBtn = view.findViewById(R.id.btn_signup);
+        registerBtn = view.findViewById(R.id.btn_signup_business_action);
         businessPhoneEt = view.findViewById(R.id.phone_field_register_business);
         businessPhoneEt = view.findViewById(R.id.phone_field_register_business);
         registerBtn.setOnClickListener((v) -> {
@@ -51,7 +52,7 @@ public class BusinessRegistrationFragment extends WheelsFragment {
                             @Override
                             public void onSuccess(WheelsBusiness business) {
                                 //TODO: Cache business locally
-                                    Navigation.findNavController(view).popBackStack();
+                                    NavHostFragment.findNavController(BusinessRegistrationFragment.this).popBackStack();
                             }
 
                             @Override

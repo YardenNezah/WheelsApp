@@ -86,11 +86,11 @@
 
 
         <Button
-            android:id="@+id/btn_signup"
+            android:id="@+id/btn_signup_client_action"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="#094F9C"
-            android:text="Register as Client"
+            android:text="Register"
             android:layout_marginHorizontal="42dp"
             android:layout_marginVertical="8dp"
             android:textAllCaps="false"/>
@@ -104,7 +104,8 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#094F9C"
+                android:backgroundTint="@android:color/transparent"
+                android:textColor="#094F9C"
                 android:textAllCaps="false"
                 android:id="@+id/move_to_business_registration_btn"
                 android:text="Move to Business Registration"

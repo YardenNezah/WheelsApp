@@ -40,18 +40,6 @@ public class BookingFragment extends Fragment {
         rvBusinessList = view.findViewById(R.id.rvBusinessList);
         rvBusinessList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        FirebaseManager.instance.getAllWheelsBusinesses(new OnWheelsBusinessBookingsListener() {
-            @Override
-            public void onSuccess(List<WheelsBusiness> allBusinesses) {
-                BusinessListRvAdapter adapter = new BusinessListRvAdapter(allBusinesses);
-                rvBusinessList.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                System.out.println(e.getMessage());
-            }
-        });
     }
 
 

@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.wheelsapp.MainActivity;
 import com.example.wheelsapp.R;
@@ -21,7 +22,7 @@ public class LoginFragment extends WheelsFragment {
 
 
     EditText emailEt,passEt;
-    Button loginBtn,toSignUp;
+    Button loginBtn,toClientSignUp,toBusinessSignUp;
 
     @Nullable
     @Override
@@ -38,8 +39,14 @@ public class LoginFragment extends WheelsFragment {
         emailEt = view.findViewById(R.id.email_field_login);
         passEt = view.findViewById(R.id.password_field_login);
 
-        toSignUp = view.findViewById(R.id.btn_to_signup);
-        toSignUp.setOnClickListener((v) -> startActivity(new Intent(this, getContext())));
+        toBusinessSignUp = view.findViewById(R.id.btn_signup_business);
+        toClientSignUp = view.findViewById(R.id.btn_signup_client);
+        toClientSignUp.setOnClickListener((v) ->  {
+            NavHostFragment.findNavController(this).navigate(R.id.action_loginFragment_to_clientRegistrationFragment);
+        });
+        toBusinessSignUp.setOnClickListener((v) ->  {
+            NavHostFragment.findNavController(this).navigate(R.id.action_loginFragment_to_businessRegistrationFragment);
+        });
         loginBtn.setOnClickListener((v) -> {
             if(isValidFields(new EditText[] {emailEt,passEt})) {
 
@@ -47,7 +54,7 @@ public class LoginFragment extends WheelsFragment {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(emailEt.getText().toString(),passEt.getText()
                         .toString()).addOnSuccessListener(authResult ->  {
                     stopLoading();
-                    startActivity(new Intent(this, MainActivity.class));
+                    startActivity(new Intent(getContext(), MainActivity.class));
                 })
                         .addOnFailureListener(e -> {
                             stopLoading();

@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/layout/activity_register_business.xml" value="0.24166666666666667" />
         <entry key="app/src/main/res/layout/business_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_business_list.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_forgotpass.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.24166666666666667" />
         <entry key="app/src/main/res/layout/fragment_register_business.xml" value="0.24166666666666667" />
         <entry key="app/src/main/res/layout/fragment_register_client.xml" value="0.24166666666666667" />

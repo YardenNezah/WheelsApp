@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_nav_graph"
     app:startDestination="@id/loginFragment">
     <fragment
+        tools:layout="@layout/fragment_login"
         android:id="@+id/loginFragment"
         android:name="com.example.wheelsapp.activities.auth.LoginFragment"
         android:label="LoginFragment" >
@@ -11,14 +13,16 @@
             android:id="@+id/action_loginFragment_to_clientRegistrationFragment"
             app:destination="@id/clientRegistrationFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_businessRegistrationFragment2"
+            android:id="@+id/action_loginFragment_to_businessRegistrationFragment"
             app:destination="@id/businessRegistrationFragment" />
     </fragment>
     <fragment
+        tools:layout="@layout/fragment_register_business"
         android:id="@+id/businessRegistrationFragment"
         android:name="com.example.wheelsapp.activities.auth.BusinessRegistrationFragment"
         android:label="BusinessRegistrationFragment" />
     <fragment
+        tools:layout="@layout/fragment_register_client"
         android:id="@+id/clientRegistrationFragment"
         android:name="com.example.wheelsapp.activities.auth.ClientRegistrationFragment"
         android:label="ClientRegistrationFragment" />

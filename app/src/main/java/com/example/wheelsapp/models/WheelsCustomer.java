@@ -1,7 +1,16 @@
 package com.example.wheelsapp.models;
 
+
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "customers")
 public class WheelsCustomer {
 
+
+    @PrimaryKey
+    @NonNull
     private String customerId;
     private String customerName;
     private String customerEmail;
@@ -17,11 +26,12 @@ public class WheelsCustomer {
 
 
 
+    @NonNull
     public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(@NonNull String customerId) {
         this.customerId = customerId;
     }
 

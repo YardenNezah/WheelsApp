@@ -1,9 +1,11 @@
-package com.example.wheelsapp;
+package com.example.wheelsapp.utilities;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import com.example.wheelsapp.R;
 
 public class MapDialog extends AlertDialog  {
 

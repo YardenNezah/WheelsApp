@@ -1,4 +1,4 @@
-package com.example.wheelsapp.fragments;
+package com.example.wheelsapp.main.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.example.wheelsapp.activities.auth;
+package com.example.wheelsapp.auth.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,16 +9,13 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.wheelsapp.FirebaseManager;
+import com.example.wheelsapp.db.external.FirebaseManager;
 import com.example.wheelsapp.R;
 import com.example.wheelsapp.WheelsFragment;
-import com.example.wheelsapp.interfaces.OnWheelsBusinessListener;
-import com.example.wheelsapp.interfaces.OnWheelsCustomerListener;
+import com.example.wheelsapp.interfaces.OnWheelsBusinessExternalListener;
 import com.example.wheelsapp.models.WheelsBusiness;
-import com.example.wheelsapp.models.WheelsCustomer;
 
 public class BusinessRegistrationFragment extends WheelsFragment {
     EditText emailEt,passEt,businessNameEt,businessPhoneEt;
@@ -48,7 +45,7 @@ public class BusinessRegistrationFragment extends WheelsFragment {
                 //TODO: coordinates & image
                 FirebaseManager.instance.createNewBusiness(emailEt.getText().toString(), passEt.getText().toString(),
                         businessNameEt.getText().toString(), businessPhoneEt.getText().toString(), null,
-                        null, new OnWheelsBusinessListener() {
+                        null, new OnWheelsBusinessExternalListener() {
                             @Override
                             public void onSuccess(WheelsBusiness business) {
                                 //TODO: Cache business locally

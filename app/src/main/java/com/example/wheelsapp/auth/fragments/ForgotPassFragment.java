@@ -1,4 +1,4 @@
-package com.example.wheelsapp.activities;
+package com.example.wheelsapp.auth.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

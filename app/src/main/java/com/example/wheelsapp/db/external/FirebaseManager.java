@@ -1,31 +1,20 @@
-package com.example.wheelsapp;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+package com.example.wheelsapp.db.external;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-
-import com.example.wheelsapp.interfaces.OnWheelsBusinessBookingsListener;
-import com.example.wheelsapp.interfaces.OnWheelsBusinessListener;
-import com.example.wheelsapp.interfaces.OnWheelsServicesListener;
-import com.example.wheelsapp.interfaces.OnWheelsCustomerListener;
-import com.example.wheelsapp.interfaces.WheelsListener;
+import com.example.wheelsapp.interfaces.OnWheelsBusinessBookingsExternalListener;
+import com.example.wheelsapp.interfaces.OnWheelsBusinessExternalListener;
+import com.example.wheelsapp.interfaces.OnWheelsCustomerExternalListener;
+import com.example.wheelsapp.interfaces.WheelsExternalListener;
 import com.example.wheelsapp.models.Booking;
 import com.example.wheelsapp.models.LatLng;
 import com.example.wheelsapp.models.WheelsBusiness;
 import com.example.wheelsapp.models.WheelsCustomer;
-import com.example.wheelsapp.models.WheelsService;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +27,7 @@ public class FirebaseManager {
     private final DatabaseReference customers_ref = FirebaseDatabase.getInstance().getReference("users");
     private final DatabaseReference businesses_ref = FirebaseDatabase.getInstance().getReference("businesses");
     private final DatabaseReference bookings_ref = FirebaseDatabase.getInstance().getReference("services");
-    public void getWheelsCustomer(String uid, OnWheelsCustomerListener listener) {
+    public void getWheelsCustomer(String uid, OnWheelsCustomerExternalListener listener) {
         assert FirebaseAuth.getInstance().getUid() !=null;
         customers_ref.child(uid)
                 .get()
@@ -48,7 +37,7 @@ public class FirebaseManager {
                 }).addOnFailureListener(listener::onFailure);
     }
 
-    public void getWheelsBusiness(String bid, OnWheelsBusinessListener listener) {
+    public void getWheelsBusiness(String bid, OnWheelsBusinessExternalListener listener) {
         assert bid !=null;
         businesses_ref.child(bid)
                 .get()
@@ -63,7 +52,7 @@ public class FirebaseManager {
     }
 
 
-    public void getAllBusinessBookings(String bid,OnWheelsBusinessBookingsListener listener) {
+    public void getAllBusinessBookings(String bid, OnWheelsBusinessBookingsExternalListener listener) {
         businesses_ref
                 .child(bid)
                 .get()
@@ -99,7 +88,7 @@ public class FirebaseManager {
 
 
     public void createNewBusiness(String email, String password, String bName, String bPhoneNumber, LatLng coordinates,
-                                  Uri image, OnWheelsBusinessListener listener) {
+                                  Uri image, OnWheelsBusinessExternalListener listener) {
 
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
@@ -124,7 +113,7 @@ public class FirebaseManager {
                                   String email,
                                   String phoneNumber,
                                   String password,
-                                  WheelsListener<WheelsCustomer> listener) {
+                                  WheelsExternalListener<WheelsCustomer> listener) {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
                 .addOnSuccessListener(authResult -> {
                     if(authResult.getUser()!= null ) {
@@ -137,11 +126,11 @@ public class FirebaseManager {
 
 
     // Signs in a customer by email pass
-    public void signInCustomer(String email,String password,WheelsListener<WheelsCustomer> listener) {
+    public void signInCustomer(String email, String password, WheelsExternalListener<WheelsCustomer> listener) {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
                 .addOnSuccessListener(authResult -> {
                     if(authResult.getUser()!=null) {
-                        getWheelsCustomer(authResult.getUser().getUid(), new OnWheelsCustomerListener() {
+                        getWheelsCustomer(authResult.getUser().getUid(), new OnWheelsCustomerExternalListener() {
                             @Override
                             public void onFailure(Exception e) {
                                 listener.onFailure(e);
@@ -156,11 +145,11 @@ public class FirebaseManager {
                 }).addOnFailureListener(listener::onFailure);
     }
     // Signs in a business by email pass
-    public void signInBusiness(String email,String password,WheelsListener<WheelsBusiness> listener) {
+    public void signInBusiness(String email, String password, WheelsExternalListener<WheelsBusiness> listener) {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
                 .addOnSuccessListener(authResult -> {
                     if(authResult.getUser()!=null) {
-                        getWheelsBusiness(authResult.getUser().getUid(), new OnWheelsBusinessListener() {
+                        getWheelsBusiness(authResult.getUser().getUid(), new OnWheelsBusinessExternalListener() {
                             @Override
                             public void onSuccess(WheelsBusiness business) {
                                 listener.onSuccess(business);

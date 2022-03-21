@@ -1,12 +1,9 @@
-package com.example.wheelsapp.activities;
+package com.example.wheelsapp.auth.activities;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.wheelsapp.R;
 

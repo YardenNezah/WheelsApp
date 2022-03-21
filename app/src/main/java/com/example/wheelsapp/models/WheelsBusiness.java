@@ -1,10 +1,20 @@
 package com.example.wheelsapp.models;
 
+
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "businesses")
 public class WheelsBusiness {
 
+
+    @PrimaryKey
+    @NonNull
     private String businessId;
     private String name;
-    private LatLng latLng;
+    private double lat;
+    private double lng;
     private String image;
     private String email;
     private String ownerId;
@@ -14,7 +24,8 @@ public class WheelsBusiness {
     public WheelsBusiness(String phoneNumber, String businessName, LatLng latLng, String image,
                           String email,String ownerId) {
         this.name = businessName;
-        this.latLng = latLng;
+        this.lat = latLng.getLat();
+        this.lng = latLng.getLng();
         this.image = image;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -42,11 +53,13 @@ public class WheelsBusiness {
         this.ownerId = ownerId;
     }
 
+
+    @NonNull
     public String getBusinessId() {
         return businessId;
     }
 
-    public void setBusinessId(String businessId) {
+    public void setBusinessId(@NonNull String businessId) {
         this.businessId = businessId;
     }
 
@@ -54,8 +67,12 @@ public class WheelsBusiness {
         return email;
     }
 
-    public LatLng getLatLng() {
-        return latLng;
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLng() {
+        return lng;
     }
 
     public String getImage() {
@@ -74,8 +91,13 @@ public class WheelsBusiness {
         this.image = image;
     }
 
-    public void setLatLng(LatLng latLng) {
-        this.latLng = latLng;
+
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
     public void setName(String name) {

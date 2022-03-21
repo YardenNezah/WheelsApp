@@ -1,10 +1,11 @@
-package com.example.wheelsapp;
+package com.example.wheelsapp.main.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.wheelsapp.fragments.BookingFragment;
+import com.example.wheelsapp.R;
+import com.example.wheelsapp.main.fragments.BookingFragment;
 
 public class MainActivity extends AppCompatActivity {
 

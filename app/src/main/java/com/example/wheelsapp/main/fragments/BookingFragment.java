@@ -1,4 +1,4 @@
-package com.example.wheelsapp.fragments;
+package com.example.wheelsapp.main.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,9 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.wheelsapp.FirebaseManager;
 import com.example.wheelsapp.R;
-import com.example.wheelsapp.interfaces.OnWheelsBusinessBookingsListener;
 import com.example.wheelsapp.models.WheelsBusiness;
 import com.squareup.picasso.Picasso;
 

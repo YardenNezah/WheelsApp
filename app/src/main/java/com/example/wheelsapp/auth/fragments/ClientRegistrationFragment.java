@@ -1,4 +1,4 @@
-package com.example.wheelsapp.activities.auth;
+package com.example.wheelsapp.auth.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,19 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.wheelsapp.FirebaseManager;
+import com.example.wheelsapp.db.external.FirebaseManager;
 import com.example.wheelsapp.R;
 import com.example.wheelsapp.WheelsFragment;
-import com.example.wheelsapp.interfaces.OnWheelsCustomerListener;
+import com.example.wheelsapp.interfaces.OnWheelsCustomerExternalListener;
 import com.example.wheelsapp.models.WheelsCustomer;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class ClientRegistrationFragment extends WheelsFragment {
 
@@ -51,7 +48,7 @@ public class ClientRegistrationFragment extends WheelsFragment {
                 showLoading("Signing up...");
 
                 FirebaseManager.instance.createNewCustomer(fullNameEt.getText().toString(),
-                        emailEt.getText().toString(), phoneEt.getText().toString(), passEt.getText().toString(), new OnWheelsCustomerListener() {
+                        emailEt.getText().toString(), phoneEt.getText().toString(), passEt.getText().toString(), new OnWheelsCustomerExternalListener() {
                             @Override
                             public void onFailure(Exception e) {
                                 showToast(e.getMessage());

@@ -1,4 +1,4 @@
-package com.example.wheelsapp.activities.auth;
+package com.example.wheelsapp.auth.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,14 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.wheelsapp.MainActivity;
+import com.example.wheelsapp.main.activities.MainActivity;
 import com.example.wheelsapp.R;
 import com.example.wheelsapp.WheelsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends WheelsFragment {
-
-
 
     EditText emailEt,passEt;
     Button loginBtn,toClientSignUp,toBusinessSignUp;

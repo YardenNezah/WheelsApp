@@ -44,6 +44,7 @@ public class FirebaseManager {
                 }).addOnFailureListener(listener::onFailure);
     }
 
+    
     public void getWheelsBusiness(String bid, OnWheelsBusinessExternalListener listener) {
         assert bid !=null;
         businesses_ref.child(bid)

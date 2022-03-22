@@ -13,9 +13,7 @@
         android:id="@+id/layout_register_business"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_height="200dp">
-
-
+        android:layout_height="120dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,85 +36,102 @@
     </LinearLayout>
 
 
-
     <LinearLayout
         android:id="@+id/register_fields_business"
-        android:padding="32dp"
-        android:layout_marginTop="32dp"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/layout_register_business"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_height="wrap_content">
+        app:layout_constraintTop_toBottomOf="@id/layout_register_business">
+
+        <ImageView
+            android:id="@+id/business_logo_pick"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_margin="2dp"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload logo"
+            android:textAlignment="center" />
+
         <EditText
             android:id="@+id/businessName_field_register"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="42dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginVertical="4dp"
             android:drawableRight="@drawable/ic_baseline_person_24"
-            android:hint="Enter Business name"/>
+            android:hint="Enter Business name" />
+
         <EditText
             android:id="@+id/phone_field_register_business"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="42dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginVertical="4dp"
             android:drawableRight="@drawable/ic_baseline_phone_enabled_24"
-            android:hint="Enter Business phone"/>
+            android:hint="Enter Business phone" />
+
         <EditText
             android:id="@+id/email_field_register_business"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="42dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginVertical="4dp"
             android:drawableRight="@drawable/ic_baseline_mail_24"
-            android:hint="Enter Business email"/>
+            android:hint="Enter Business email" />
 
         <EditText
             android:id="@+id/password_field_register_business"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="42dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginVertical="4dp"
             android:drawableRight="@drawable/ic_baseline_vpn_key_24"
-            android:hint="Enter password"/>
+            android:hint="Enter password" />
 
         <Button
             android:id="@+id/btn_map_business"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginHorizontal="42dp"
+            android:layout_marginVertical="2dp"
             android:backgroundTint="#094F9C"
             android:text="Choose location"
-            android:layout_marginHorizontal="42dp"
-            android:layout_marginVertical="8dp"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/btn_signup_business_action"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginHorizontal="42dp"
+            android:layout_marginVertical="2dp"
             android:backgroundTint="#094F9C"
             android:text="Register Business"
-            android:layout_marginHorizontal="42dp"
-            android:layout_marginVertical="8dp"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="64dp"
-            android:weightSum="3"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal"
+            android:weightSum="3">
+
             <Button
+                android:id="@+id/move_to_client_registration_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"
-                android:textColor="#094F9C"
-                android:textAllCaps="false"
-                android:id="@+id/move_to_client_registration_btn"
                 android:text="Move to Client Registration"
-                />
+                android:textAllCaps="false"
+                android:textColor="#094F9C" />
         </LinearLayout>
     </LinearLayout>
 

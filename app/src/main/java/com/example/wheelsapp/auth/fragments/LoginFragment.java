@@ -7,14 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.wheelsapp.db.external.FirebaseManager;
+import com.example.wheelsapp.interfaces.WheelsExternalListener;
 import com.example.wheelsapp.main.activities.MainActivity;
 import com.example.wheelsapp.R;
 import com.example.wheelsapp.WheelsFragment;
+import com.example.wheelsapp.models.WheelsBusiness;
+import com.example.wheelsapp.models.WheelsCustomer;
+import com.example.wheelsapp.utilities.JsonHelper;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends WheelsFragment {
@@ -22,6 +29,8 @@ public class LoginFragment extends WheelsFragment {
     EditText emailEt,passEt;
     Button loginBtn,toClientSignUp,toBusinessSignUp;
 
+
+    RadioGroup loginType;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,6 +46,7 @@ public class LoginFragment extends WheelsFragment {
         emailEt = view.findViewById(R.id.email_field_login);
         passEt = view.findViewById(R.id.password_field_login);
 
+        loginType = view.findViewById(R.id.login_type);
         toBusinessSignUp = view.findViewById(R.id.btn_signup_business);
         toClientSignUp = view.findViewById(R.id.btn_signup_client);
         toClientSignUp.setOnClickListener((v) ->  {
@@ -49,14 +59,47 @@ public class LoginFragment extends WheelsFragment {
             if(isValidFields(new EditText[] {emailEt,passEt})) {
 
                 showLoading("Signing in...");
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(emailEt.getText().toString(),passEt.getText()
-                        .toString()).addOnSuccessListener(authResult ->  {
-                    stopLoading();
-                    startActivity(new Intent(getContext(), MainActivity.class));
-                })
-                        .addOnFailureListener(e -> {
-                            stopLoading();
-                            showToast(e.getMessage()); });
+
+                if(loginType.getCheckedRadioButtonId() == R.id.business_rb) {
+                    FirebaseManager.instance
+                            .signInCustomer(emailEt.getText().toString(), passEt.getText().toString()
+                                    , new WheelsExternalListener<WheelsCustomer>() {
+                                        @Override
+                                        public void onSuccess(WheelsCustomer customer) {
+                                            stopLoading();
+                                            Intent i = new Intent(getActivity(),MainActivity.class);
+                                            i.putExtra("customer", JsonHelper.toJson(customer));
+                                            startActivity(i);
+                                        }
+
+                                        @Override
+                                        public void onFailure(Exception e) {
+                                            stopLoading();
+                                            Toast.makeText(getContext(),"No Corresponding Customer Found / Wrong Credentials",Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+                }else {
+
+                    FirebaseManager.instance
+                            .signInBusiness(emailEt.getText().toString(), passEt.getText().toString()
+                                    , new WheelsExternalListener<WheelsBusiness>() {
+                                        @Override
+                                        public void onSuccess(WheelsBusiness business) {
+                                            Intent i = new Intent(getActivity(),MainActivity.class);
+                                            i.putExtra("business", JsonHelper.toJson(business));
+                                            startActivity(i);
+                                            stopLoading();
+                                        }
+
+                                        @Override
+                                        public void onFailure(Exception e) {
+                                            stopLoading();
+                                            Toast.makeText(getContext(),"No Corresponding Business Found / Wrong Credentials",Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                }
+
             }
         });
     }

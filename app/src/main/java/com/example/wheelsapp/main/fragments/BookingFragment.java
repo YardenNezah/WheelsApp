@@ -6,24 +6,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wheelsapp.R;
+import com.example.wheelsapp.WheelsFragment;
+import com.example.wheelsapp.db.external.FirebaseManager;
+import com.example.wheelsapp.main.BusinessViewModel;
+import com.example.wheelsapp.main.CustomerViewModel;
 import com.example.wheelsapp.models.Booking;
+import com.example.wheelsapp.models.WheelsBusiness;
+import com.example.wheelsapp.models.WheelsCustomer;
+import com.example.wheelsapp.utilities.JsonHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class BookingFragment extends Fragment {
+public class BookingFragment extends WheelsFragment {
 
 
     private RecyclerView rvBookingList;
     private BookingsListRvAdapter bookingsListRvAdapter;
+
+    private BusinessViewModel businessViewModel;
 
     @Nullable
     @Override
@@ -37,6 +49,38 @@ public class BookingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rvBookingList = view.findViewById(R.id.rvBookingList);
         rvBookingList.setLayoutManager(new LinearLayoutManager(getContext()));
+        showLoading("Loading bookings..");
+        if(getActivity()!= null) {
+
+            businessViewModel = new ViewModelProvider(getActivity()).get(BusinessViewModel.class);
+            businessViewModel.getBusinessLiveData()
+                    .observe(getViewLifecycleOwner(), business -> {
+                        // do whatever with business
+                     showToast("Welcome " + business.getName());
+                        businessViewModel.getAllBusinessBookings(business.getBusinessId());
+                    });
+
+            businessViewModel.getExceptionsLiveData()
+                    .observe(getViewLifecycleOwner(), e -> {
+                            stopLoading();
+                            showToast(e.getMessage());
+                    });
+
+            businessViewModel.getBookingListLiveData()
+                    .observe(getViewLifecycleOwner(), bookings -> {
+                        bookingsListRvAdapter = new BookingsListRvAdapter(bookings);
+                        rvBookingList.setAdapter(bookingsListRvAdapter);
+                        stopLoading();
+                    });
+
+        }
+
+
+        if(getActivity()!=null && getActivity().getIntent()!=null && getActivity().getIntent().getStringExtra("business")!=null) {
+            businessViewModel.setBusiness(JsonHelper.fromJson(getActivity().getIntent().getStringExtra("business"), WheelsBusiness.class));
+        }else {
+            stopLoading();
+        }
 
     }
 

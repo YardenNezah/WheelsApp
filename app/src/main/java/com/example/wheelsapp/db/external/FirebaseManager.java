@@ -1,6 +1,8 @@
 package com.example.wheelsapp.db.external;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+
 import com.example.wheelsapp.interfaces.OnWheelsBusinessBookingsExternalListener;
 import com.example.wheelsapp.interfaces.OnWheelsBusinessExternalListener;
 import com.example.wheelsapp.interfaces.OnWheelsCustomerExternalListener;
@@ -9,12 +11,16 @@ import com.example.wheelsapp.models.Booking;
 import com.example.wheelsapp.models.LatLng;
 import com.example.wheelsapp.models.WheelsBusiness;
 import com.example.wheelsapp.models.WheelsCustomer;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +39,8 @@ public class FirebaseManager {
                 .get()
                 .addOnSuccessListener(dataSnapshot -> {
                     WheelsCustomer u = dataSnapshot.getValue(WheelsCustomer.class);
-                    listener.onSuccess(u);
+                    if(u==null) listener.onFailure(new Exception("No Customer with id " + uid));
+                    else listener.onSuccess(u);
                 }).addOnFailureListener(listener::onFailure);
     }
 
@@ -50,6 +57,50 @@ public class FirebaseManager {
                     }
                 }).addOnFailureListener(listener::onFailure);
     }
+
+    private ValueEventListener businessListListener;
+
+    public void removeBusinessListValueEventListener() {
+        if(businessListListener!=null) {
+            businesses_ref.removeEventListener(businessListListener);
+            businessListListener = null;
+        }
+    }
+    public void getBusinessList(WheelsExternalListener<List<WheelsBusiness>> listener) {
+        businessListListener  = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<WheelsBusiness> businesses = new ArrayList<>();
+                for(DataSnapshot child :  snapshot.getChildren()) {
+                    WheelsBusiness b = child.getValue(WheelsBusiness.class);
+                    if(b!=null)
+                            businesses.add(b);
+                }
+                listener.onSuccess(businesses);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                  listener.onFailure(error.toException());
+            }
+        };
+
+        businesses_ref.addValueEventListener(businessListListener);
+    }
+
+
+    //uploads an image to firebase
+    public void uploadImage(Uri uri,String path,WheelsExternalListener<String> urlListener) {
+        StorageReference ref = FirebaseStorage.getInstance()
+                .getReference()
+                .child("images/")
+                .child(path);
+                ref.putFile(uri)
+                .addOnSuccessListener(taskSnapshot -> ref.getDownloadUrl().addOnSuccessListener(imageUri -> urlListener.onSuccess(imageUri.toString()))
+                        .addOnFailureListener(urlListener::onFailure))
+                        .addOnFailureListener(urlListener::onFailure);
+    }
+
 
 
     public void getAllBusinessBookings(String bid, OnWheelsBusinessBookingsExternalListener listener) {
@@ -87,22 +138,27 @@ public class FirebaseManager {
     }
 
 
-    public void createNewBusiness(String email, String password, String bName, String bPhoneNumber, LatLng coordinates,
+    public void createNewBusiness(String email, String password, String bName,String loction, String bPhoneNumber, LatLng coordinates,
                                   Uri image, OnWheelsBusinessExternalListener listener) {
-
-
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
                 .addOnSuccessListener(authResult -> {
                     if(authResult.getUser()!= null) {
-                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("/images/businesses/ " + authResult.getUser().getUid());
-                        storageReference.putFile(image)
-                                .addOnSuccessListener(taskSnapshot -> storageReference.getDownloadUrl()
-                                        .addOnSuccessListener(uri -> {
-                                            WheelsBusiness wheelsBusiness = new WheelsBusiness(bPhoneNumber,bName,coordinates,uri.toString(),email,authResult.getUser().getUid());
-                                            saveBusinessWithBusinessOwner(authResult.getUser().getUid(),wheelsBusiness);
-                                            listener.onSuccess(wheelsBusiness);
-                                        }).addOnFailureListener(listener::onFailure)).addOnFailureListener(listener::onFailure);
 
+                        uploadImage(image,"businesses/"  + authResult.getUser().getUid(),
+                                new WheelsExternalListener<String>() {
+
+                            @Override
+                            public void onSuccess(String imageUrl) {
+                                WheelsBusiness wheelsBusiness = new WheelsBusiness(bPhoneNumber,bName,loction,coordinates,imageUrl,email,authResult.getUser().getUid());
+                                saveBusinessWithBusinessOwner(authResult.getUser().getUid(),wheelsBusiness);
+                                listener.onSuccess(wheelsBusiness);
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                    listener.onFailure(e);
+                            }
+                        });
                     }
                 }).addOnFailureListener(listener::onFailure);
 
@@ -134,6 +190,7 @@ public class FirebaseManager {
                             @Override
                             public void onFailure(Exception e) {
                                 listener.onFailure(e);
+                                FirebaseAuth.getInstance().signOut();
                             }
 
                             @Override
@@ -144,9 +201,12 @@ public class FirebaseManager {
                     }else {    listener.onFailure(new Exception("Something happened while fetching customer")); }
                 }).addOnFailureListener(listener::onFailure);
     }
+
+
     // Signs in a business by email pass
     public void signInBusiness(String email, String password, WheelsExternalListener<WheelsBusiness> listener) {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
+        FirebaseAuth.getInstance()
+                .signInWithEmailAndPassword(email,password)
                 .addOnSuccessListener(authResult -> {
                     if(authResult.getUser()!=null) {
                         getWheelsBusiness(authResult.getUser().getUid(), new OnWheelsBusinessExternalListener() {
@@ -158,6 +218,7 @@ public class FirebaseManager {
                             @Override
                             public void onFailure(Exception e) {
                                 listener.onFailure(e);
+                                FirebaseAuth.getInstance().signOut();
                             }
                         });
 

@@ -13,7 +13,7 @@
         android:id="@+id/layout_register"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_height="200dp">
+        android:layout_height="120dp">
 
 
         <TextView
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="42dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginVertical="4dp"
             android:drawableRight="@drawable/ic_baseline_phone_enabled_24"
             android:hint="Enter phone Number"/>
         <EditText
@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="42dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginVertical="4dp"
             android:drawableRight="@drawable/ic_baseline_mail_24"
             android:hint="Enter email address"/>
 
@@ -78,8 +78,9 @@
             android:id="@+id/password_field_register"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="textPassword"
             android:layout_marginHorizontal="42dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginVertical="4dp"
             android:drawableRight="@drawable/ic_baseline_vpn_key_24"
             android:hint="Enter password"/>
 
@@ -92,12 +93,11 @@
             android:backgroundTint="#094F9C"
             android:text="Register"
             android:layout_marginHorizontal="42dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginVertical="4dp"
             android:textAllCaps="false"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:id="@+id/userType_rg"
             android:layout_marginHorizontal="64dp"
             android:weightSum="3"
             android:layout_height="wrap_content">

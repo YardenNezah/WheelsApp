@@ -36,7 +36,8 @@ public abstract class WheelsFragment extends Fragment {
         loadingDialog = null;
     }
 
-
+    public static final int CAMERA_REQUEST = 1;
+    public static final int GALLERY_REQUEST = 2;
 
     protected void openGallery() {
         if(getContext()==null || getActivity()==null) return;
@@ -45,7 +46,7 @@ public abstract class WheelsFragment extends Fragment {
         }else {
             Intent i = new Intent(Intent.ACTION_PICK);
             i.setType("image/*");
-            startActivity(i);
+            startActivityForResult(i,GALLERY_REQUEST);
         }
     }
 
@@ -55,7 +56,7 @@ public abstract class WheelsFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CAMERA},1);
         }else {
             Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivity(i);
+            startActivityForResult(i,CAMERA_REQUEST);
         }
     }
 

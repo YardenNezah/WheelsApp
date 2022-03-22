@@ -13,19 +13,23 @@ public class WheelsBusiness {
     @NonNull
     private String businessId;
     private String name;
+    // map coords
     private double lat;
     private double lng;
+    // location name
+    private String location;
     private String image;
     private String email;
     private String ownerId;
 
     private String phoneNumber;
 
-    public WheelsBusiness(String phoneNumber, String businessName, LatLng latLng, String image,
+    public WheelsBusiness(String phoneNumber, String businessName,String location, LatLng latLng, String image,
                           String email,String ownerId) {
         this.name = businessName;
         this.lat = latLng.getLat();
         this.lng = latLng.getLng();
+        this.location = location;
         this.image = image;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -81,6 +85,14 @@ public class WheelsBusiness {
 
     public String getName() {
         return name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public void setEmail(String email) {

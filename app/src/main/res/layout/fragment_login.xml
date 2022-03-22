@@ -13,7 +13,7 @@
         android:id="@+id/layout_login"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_height="200dp">
+        android:layout_height="120dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,6 +67,31 @@
             android:drawableRight="@drawable/ic_baseline_vpn_key_24"
             android:hint="Enter password"/>
 
+
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_marginHorizontal="48dp"
+            android:id="@+id/login_type"
+            android:checkedButton="@id/client_rb"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/client_rb"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Client"/>
+            <RadioButton
+
+                android:layout_weight="1"
+                android:id="@+id/business_rb"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Business"/>
+        </RadioGroup>
         <Button
             android:id="@+id/btn_signin"
             android:layout_width="match_parent"

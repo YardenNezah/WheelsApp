@@ -51,11 +51,13 @@ public class ClientRegistrationFragment extends WheelsFragment {
                         emailEt.getText().toString(), phoneEt.getText().toString(), passEt.getText().toString(), new OnWheelsCustomerExternalListener() {
                             @Override
                             public void onFailure(Exception e) {
+                                stopLoading();
                                 showToast(e.getMessage());
                             }
 
                             @Override
-                            public void onSuccess(WheelsCustomer user) {// TODO: Save User Locally (?)
+                            public void onSuccess(WheelsCustomer user) {
+                                stopLoading();
                                 NavHostFragment.findNavController(ClientRegistrationFragment.this).popBackStack();
                             }
                         });

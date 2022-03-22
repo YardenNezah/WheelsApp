@@ -15,7 +15,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new BookingFragment()).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_container,new BookingFragment()).commit();
 
 
 

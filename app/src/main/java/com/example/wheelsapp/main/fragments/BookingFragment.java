@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wheelsapp.R;
-import com.example.wheelsapp.models.WheelsBusiness;
+import com.example.wheelsapp.models.Booking;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -23,77 +22,70 @@ import java.util.List;
 public class BookingFragment extends Fragment {
 
 
-    private RecyclerView rvBusinessList;
+    private RecyclerView rvBookingList;
+    private BookingsListRvAdapter bookingsListRvAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_business_list,container,false);
+        return inflater.inflate(R.layout.fragment_business_bookings,container,false);
     }
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rvBusinessList = view.findViewById(R.id.rvBusinessList);
-        rvBusinessList.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvBookingList = view.findViewById(R.id.rvBookingList);
+        rvBookingList.setLayoutManager(new LinearLayoutManager(getContext()));
 
     }
 
-
-
-    public void moveToBusiness(WheelsBusiness business) {
-      //@TODO : Move to Business
-    }
-
-    class BusinessListRvAdapter extends RecyclerView.Adapter<BusinessListRvAdapter.BusinessListViewHolder> {
+    class BookingsListRvAdapter extends RecyclerView.Adapter<BookingsListRvAdapter.BookingsListViewHolder> {
 
 
 
-        private List<WheelsBusiness> businessList;
-        public BusinessListRvAdapter(List<WheelsBusiness> allBusinesses) {
+        private List<Booking> bookings;
+        public BookingsListRvAdapter(List<Booking> allBookings) {
 
-            this.businessList = allBusinesses;
+            this.bookings = allBookings;
         }
         @NonNull
         @Override
-        public BusinessListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new BusinessListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.business_item,parent,false));
+        public BookingsListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new BookingsListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.booking_item,parent,false));
         }
 
         @Override
-        public void onBindViewHolder(@NonNull BusinessListViewHolder holder, int position) {
-
-
-            WheelsBusiness b = businessList.get(position);
-
+        public void onBindViewHolder(@NonNull BookingsListViewHolder holder, int position) {
+            Booking b = bookings.get(position);
             holder.bind(b);
         }
 
         @Override
         public int getItemCount() {
-            return businessList.size();
+            return bookings.size();
         }
 
-        class BusinessListViewHolder extends RecyclerView.ViewHolder  {
-
-
-
-             ImageView businessLogo;
-             TextView businessName;
-             Button showMoreDetails;
-            public BusinessListViewHolder(@NonNull View itemView) {
+        class BookingsListViewHolder extends RecyclerView.ViewHolder  {
+             ImageView bookingImageView;
+             TextView bookingDate;
+             TextView bookingCustomerName;
+             TextView serviceType;
+            public BookingsListViewHolder(@NonNull View itemView) {
                 super(itemView);
-                businessLogo = itemView.findViewById(R.id.business_logo);
-                businessName = itemView.findViewById(R.id.business_name);
-                showMoreDetails = itemView.findViewById(R.id.btn_show_details_business);
+                bookingDate = itemView.findViewById(R.id.booking_date);
+                bookingCustomerName = itemView.findViewById(R.id.booking_customer_name);
+                serviceType = itemView.findViewById(R.id.booking_service_type);
+                bookingImageView = itemView.findViewById(R.id.booking_image_view);
             }
 
 
-            public void bind(WheelsBusiness business) {
-                businessName.setText(business.getName());
-                Picasso.get().load(business.getImage()).into(businessLogo);
-                showMoreDetails.setOnClickListener(view -> moveToBusiness(business));
+            public void bind(Booking booking) {
+                bookingCustomerName.setText(booking.getCustomerName());
+                serviceType.setText(booking.getServiceType());
+                bookingDate.setText(booking.getTime());
+                Picasso.get().load(booking.getImageUrl()).into(bookingImageView);
+
             }
         }
     }

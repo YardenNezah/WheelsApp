@@ -3,6 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/raze/WheelsApp/app/src/main/res/layout/activity_auth.xml" value="0.14130434782608695" />
+        <entry key="..\:/Users/raze/WheelsApp/app/src/main/res/layout/activity_main.xml" value="0.14130434782608695" />
+        <entry key="..\:/Users/raze/WheelsApp/app/src/main/res/layout/business_item.xml" value="0.22" />
+        <entry key="..\:/Users/raze/WheelsApp/app/src/main/res/layout/fragment_business_bookings.xml" value="0.14130434782608695" />
+        <entry key="..\:/Users/raze/WheelsApp/app/src/main/res/layout/fragment_register_business.xml" value="0.14130434782608695" />
+        <entry key="..\:/Users/raze/WheelsApp/app/src/main/res/layout/fragment_schedule.xml" value="0.22" />
         <entry key="..\:/Users/razel/WheelsApp/app/src/main/res/layout/activity_register.xml" value="0.20277777777777778" />
         <entry key="..\:/Users/razel/WheelsApp/app/src/main/res/layout/business_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.1" />

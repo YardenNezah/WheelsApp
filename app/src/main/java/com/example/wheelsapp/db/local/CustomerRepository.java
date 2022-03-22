@@ -20,20 +20,6 @@ public class CustomerRepository {
     }
 
 
-
-    public void getCustomerById(String cid, WheelsLocalListener<WheelsCustomer> listener) {
-        executor.execute(() -> {
-            WheelsCustomer c =  dao.getCustomerById(cid);
-            listener.onSuccess(c);
-        });
-    }
-    public void getAllCustomers(WheelsLocalListener<List<WheelsCustomer>> listener) {
-        executor.execute(() -> {
-            List<WheelsCustomer> customers = dao.getAllCustomers();
-            listener.onSuccess(customers);
-        });
-    }
-
     public void deleteCustomer(WheelsCustomer customer) {
         executor.execute(() -> dao.deleteCustomer(customer));
     }

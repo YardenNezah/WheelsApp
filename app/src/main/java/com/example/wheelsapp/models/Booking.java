@@ -15,10 +15,12 @@ public class Booking {
    private String customerName;
    private String serviceType;
    private String businessId;
+   private String imageUrl;
 
-    public Booking(@NonNull String id,String businessId, String time, String customerId, String customerName, String serviceType) {
+    public Booking(@NonNull String id,String businessId, String time,String imageUrl, String customerId, String customerName, String serviceType) {
         this.id = id;
         this.time = time;
+        this.imageUrl = imageUrl;
         this.businessId = businessId;
         this.customerId = customerId;
         this.customerName = customerName;
@@ -34,6 +36,14 @@ public class Booking {
 
     public String getBusinessId() {
         return businessId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @NonNull

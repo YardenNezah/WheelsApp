@@ -13,13 +13,8 @@ import java.util.List;
 
 @Dao
 public interface CustomerDao {
-
-    @Query("SELECT * from customers")
-    List<WheelsCustomer> getAllCustomers();
-
-
     @Query("SELECT * from customers WHERE customerId =:id")
-    WheelsCustomer getCustomerById(String id);
+    WheelsCustomer getCustomer(String id);
 
     @Insert
     void insertCustomer(WheelsCustomer customer);

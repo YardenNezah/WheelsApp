@@ -24,7 +24,7 @@ public interface BusinessDao {
     void deleteBusiness(WheelsBusiness business);
 
 
-    @Query("SELECT * from businesses WHERE businessId =:id")
+    @Query("SELECT * from businesses WHERE ownerId =:id")
     WheelsBusiness getBusinessById(String id);
 
     @Update

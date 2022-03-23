@@ -2,6 +2,7 @@ package com.example.wheelsapp.db.external;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
+import androidx.room.Database;
 
 import com.example.wheelsapp.interfaces.OnWheelsBusinessBookingsExternalListener;
 import com.example.wheelsapp.interfaces.OnWheelsBusinessExternalListener;
@@ -11,6 +12,8 @@ import com.example.wheelsapp.models.Booking;
 import com.example.wheelsapp.models.LatLng;
 import com.example.wheelsapp.models.WheelsBusiness;
 import com.example.wheelsapp.models.WheelsCustomer;
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +27,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class FirebaseManager {
     private FirebaseManager() {}
@@ -33,6 +37,14 @@ public class FirebaseManager {
     private final DatabaseReference customers_ref = FirebaseDatabase.getInstance().getReference("users");
     private final DatabaseReference businesses_ref = FirebaseDatabase.getInstance().getReference("businesses");
     private final DatabaseReference bookings_ref = FirebaseDatabase.getInstance().getReference("services");
+
+
+
+    // listeners
+    private ValueEventListener businessListListener;
+    private ValueEventListener businessBookingsListener;
+    private ValueEventListener customerBookingsListener;
+
     public void getWheelsCustomer(String uid, OnWheelsCustomerExternalListener listener) {
         assert FirebaseAuth.getInstance().getUid() !=null;
         customers_ref.child(uid)
@@ -59,12 +71,26 @@ public class FirebaseManager {
                 }).addOnFailureListener(listener::onFailure);
     }
 
-    private ValueEventListener businessListListener;
+
 
     public void removeBusinessListValueEventListener() {
         if(businessListListener!=null) {
             businesses_ref.removeEventListener(businessListListener);
             businessListListener = null;
+        }
+    }
+
+    public void removeBusinessBookingsListener() {
+        if(businessBookingsListener!=null) {
+            bookings_ref.removeEventListener(businessBookingsListener);
+            businessBookingsListener = null;
+        }
+    }
+
+    public void removeCustomerBookingsListener() {
+        if(customerBookingsListener!=null) {
+            bookings_ref.removeEventListener(customerBookingsListener);
+            customerBookingsListener = null;
         }
     }
     public void getBusinessList(WheelsExternalListener<List<WheelsBusiness>> listener) {
@@ -90,6 +116,18 @@ public class FirebaseManager {
     }
 
 
+    public void removeBooking(Booking booking,WheelsExternalListener<String> listener) {
+        bookings_ref
+                .child(booking.getBusinessId())
+                .child(booking.getId())
+                .removeValue()
+                .addOnSuccessListener(unused -> {
+                    listener.onSuccess("Booking successfully Declined / Deleted");
+                })
+                .addOnFailureListener(listener::onFailure);
+    }
+
+
     //uploads an image to firebase
     public void uploadImage(Uri uri,String path,WheelsExternalListener<String> urlListener) {
         StorageReference ref = FirebaseStorage.getInstance()
@@ -105,19 +143,28 @@ public class FirebaseManager {
 
 
     public void getAllBusinessBookings(String bid, OnWheelsBusinessBookingsExternalListener listener) {
-        businesses_ref
+
+       businessBookingsListener = new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot snapshot) {
+               List<Booking> list = new ArrayList<>();
+               Booking next;
+               for(DataSnapshot child : snapshot.getChildren()) {
+                   next = child.getValue(Booking.class);
+                   if(next!=null)
+                       list.add(next);
+               }
+               listener.onSuccess(list);
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError error) {
+            listener.onFailure(error.toException());
+           }
+       };
+        bookings_ref
                 .child(bid)
-                .get()
-                .addOnSuccessListener(dataSnapshot -> {
-                    List<Booking> list = new ArrayList<>();
-                    Booking next;
-                    for(DataSnapshot child : dataSnapshot.getChildren()) {
-                        next = child.getValue(Booking.class);
-                        if(next!=null)
-                        list.add(next);
-                    }
-                    listener.onSuccess(list);
-                }).addOnFailureListener(listener::onFailure);
+                .addValueEventListener(businessBookingsListener);
     }
 
 
@@ -131,11 +178,27 @@ public class FirebaseManager {
                 .setValue(user);
     }
 
-    public void saveBooking(String bid, Booking service) {
+    public void saveBooking(String bid, Booking service,Uri image,WheelsExternalListener<String> listener) {
         assert bid !=null;
-        bookings_ref.child(bid)
-                .push()
-                .setValue(service);
+        DatabaseReference ref = bookings_ref.child(bid)
+                .push();
+        assert ref.getKey()!=null;
+        service.setId(ref.getKey());
+        uploadImage(image, "bookings/" + ref.getKey(), new WheelsExternalListener<String>() {
+            @Override
+            public void onSuccess(String imageUrl) {
+                service.setImageUrl(imageUrl);
+                ref.setValue(service)
+                        .addOnSuccessListener((unused -> listener.onSuccess("Successfully booked treatment")))
+                        .addOnFailureListener(listener::onFailure);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                listener.onFailure(e);
+            }
+        });
+
     }
 
 
@@ -175,6 +238,7 @@ public class FirebaseManager {
                 .addOnSuccessListener(authResult -> {
                     if(authResult.getUser()!= null ) {
                         WheelsCustomer newUser = new WheelsCustomer(email, fullName, phoneNumber);
+                        newUser.setCustomerId(authResult.getUser().getUid());
                         saveCustomer(authResult.getUser().getUid(),newUser);
                         listener.onSuccess(newUser);
                     }

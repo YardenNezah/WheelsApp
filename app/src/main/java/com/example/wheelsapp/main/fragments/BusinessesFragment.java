@@ -40,6 +40,7 @@ public class BusinessesFragment extends WheelsFragment {
     BusinessListRvAdapter rvAdapter;
 
     private CustomerViewModel customerViewModel;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,12 +56,12 @@ public class BusinessesFragment extends WheelsFragment {
         rvBusinessList = view.findViewById(R.id.rvBusinessList);
         rvBusinessList.setLayoutManager(new LinearLayoutManager(view.getContext()));
         showLoading("Loading all businesses..");
-        if(getActivity()!= null) {
+        if (getActivity() != null) {
             customerViewModel = new ViewModelProvider(getActivity()).get(CustomerViewModel.class);
             customerViewModel.getCustomerLiveData()
                     .observe(getViewLifecycleOwner(), customer -> {
                         // do whatever with customer
-                        Toast.makeText(getContext(),"Welcome " +customer.getCustomerName(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Welcome " + customer.getCustomerName(), Toast.LENGTH_SHORT).show();
                     });
 
             customerViewModel.getExceptionsLiveData()
@@ -71,7 +72,8 @@ public class BusinessesFragment extends WheelsFragment {
                         rvBusinessList.setAdapter(rvAdapter);
                         stopLoading();
                     });
-        }if(getActivity()!=null && getActivity().getIntent()!=null && getActivity().getIntent().getStringExtra("customer")!=null) {
+        }
+        if (getActivity() != null && getActivity().getIntent() != null && getActivity().getIntent().getStringExtra("customer") != null) {
             customerViewModel.setCustomer(JsonHelper.fromJson(getActivity().getIntent().getStringExtra("customer"), WheelsCustomer.class));
         }
 
@@ -81,13 +83,15 @@ public class BusinessesFragment extends WheelsFragment {
     class BusinessListRvAdapter extends RecyclerView.Adapter<BusinessesFragment.BusinessListRvAdapter.BusinessListViewHolder> {
 
         private List<WheelsBusiness> businesses;
+
         public BusinessListRvAdapter(List<WheelsBusiness> allBusinesses) {
             this.businesses = allBusinesses;
         }
+
         @NonNull
         @Override
         public BusinessesFragment.BusinessListRvAdapter.BusinessListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new BusinessesFragment.BusinessListRvAdapter.BusinessListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.business_item,parent,false));
+            return new BusinessesFragment.BusinessListRvAdapter.BusinessListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.business_item, parent, false));
         }
 
         @Override
@@ -101,12 +105,13 @@ public class BusinessesFragment extends WheelsFragment {
             return businesses.size();
         }
 
-        class BusinessListViewHolder extends RecyclerView.ViewHolder  {
+        class BusinessListViewHolder extends RecyclerView.ViewHolder {
             ImageView businessLogo;
             TextView businessLocation;
             TextView businessName;
 
             Button bookTreatment;
+
             public BusinessListViewHolder(@NonNull View itemView) {
                 super(itemView);
                 businessLogo = itemView.findViewById(R.id.business_image_view_list);
@@ -121,10 +126,13 @@ public class BusinessesFragment extends WheelsFragment {
                 Picasso.get().load(business.getImage()).into(businessLogo);
                 businessName.setText(business.getName());
                 businessLocation.setText(business.getLocation());
+                bookTreatment.setOnClickListener((v) -> {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("business", JsonHelper.toJson(business));
+                    NavHostFragment.findNavController(BusinessesFragment.this)
+                            .navigate(R.id.action_businessesFragment_to_scheduleFragment,bundle);
 
-                bookTreatment.setOnClickListener((v) -> NavHostFragment.findNavController(BusinessesFragment.this)
-                        .navigate(R.id.action_businessesFragment_to_scheduleFragment));
-
+                });
             }
         }
     }

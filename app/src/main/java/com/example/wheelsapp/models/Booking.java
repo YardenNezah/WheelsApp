@@ -17,14 +17,16 @@ public class Booking {
    private String businessId;
    private String imageUrl;
 
-    public Booking(@NonNull String id,String businessId, String time,String imageUrl, String customerId, String customerName, String serviceType) {
-        this.id = id;
+    public Booking(String businessId,String customerId, String time,String imageUrl, String customerName, String serviceType) {
         this.time = time;
         this.imageUrl = imageUrl;
         this.businessId = businessId;
         this.customerId = customerId;
         this.customerName = customerName;
         this.serviceType = serviceType;
+    }
+    public Booking(String businessId,String customerId, String time, String customerName, String serviceType) {
+        this(businessId,customerId,time,"",customerName,serviceType);
     }
 
     // firebase

@@ -8,17 +8,19 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.wheelsapp.models.Booking;
+import com.example.wheelsapp.models.Theme;
 import com.example.wheelsapp.models.WheelsBusiness;
 import com.example.wheelsapp.models.WheelsCustomer;
 
 
-@Database(entities = {Booking.class, WheelsBusiness.class, WheelsCustomer.class},version = 1)
+@Database(entities = {Booking.class, WheelsBusiness.class, WheelsCustomer.class, Theme.class},version = 2)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
     abstract BookingsDao bookingsDao();
     abstract BusinessDao businessDao();
     abstract CustomerDao customerDao();
+    abstract ThemeDao themeDao();
 
     public static synchronized AppDatabase getInstance(Context context) {
         if(instance==null) {

@@ -32,8 +32,10 @@ public abstract class WheelsFragment extends Fragment {
     }
 
     protected void stopLoading() {
-        loadingDialog.dismiss();
-        loadingDialog = null;
+        if(loadingDialog !=null) {
+            loadingDialog.dismiss();
+            loadingDialog = null;
+        }
     }
 
     public static final int CAMERA_REQUEST = 1;

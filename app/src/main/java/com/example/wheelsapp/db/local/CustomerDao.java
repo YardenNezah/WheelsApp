@@ -22,7 +22,6 @@ public interface CustomerDao {
     @Delete
     void deleteCustomer(WheelsCustomer customer);
 
-
     @Update
     void updateCustomer(WheelsCustomer customer);
 }

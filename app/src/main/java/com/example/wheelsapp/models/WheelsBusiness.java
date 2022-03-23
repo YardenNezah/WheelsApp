@@ -8,10 +8,6 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "businesses")
 public class WheelsBusiness {
 
-
-    @PrimaryKey
-    @NonNull
-    private String businessId;
     private String name;
     // map coords
     private double lat;
@@ -20,12 +16,14 @@ public class WheelsBusiness {
     private String location;
     private String image;
     private String email;
+    @PrimaryKey
+    @NonNull
     private String ownerId;
 
     private String phoneNumber;
 
     public WheelsBusiness(String phoneNumber, String businessName,String location, LatLng latLng, String image,
-                          String email,String ownerId) {
+                          String email,@NonNull String ownerId) {
         this.name = businessName;
         this.lat = latLng.getLat();
         this.lng = latLng.getLng();
@@ -49,22 +47,13 @@ public class WheelsBusiness {
         this.phoneNumber = phoneNumber;
     }
 
+    @NonNull
     public String getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(String ownerId) {
+    public void setOwnerId(@NonNull String ownerId) {
         this.ownerId = ownerId;
-    }
-
-
-    @NonNull
-    public String getBusinessId() {
-        return businessId;
-    }
-
-    public void setBusinessId(@NonNull String businessId) {
-        this.businessId = businessId;
     }
 
     public String getEmail() {

@@ -48,15 +48,41 @@
         </LinearLayout>
 
     </LinearLayout>
-    <TextView
-        android:id="@+id/booking_date"
+
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="01/01/1999"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_margin="8dp"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textFontWeight="100"
-        android:padding="4dp"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#234205"
+            android:id="@+id/approve_btn"
+            android:text="Approve"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#812A2A"
+            android:id="@+id/decline_btn"
+            android:text="Decline"/>
+
+        <TextView
+            android:id="@+id/booking_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01/01/1999"
+
+
+            android:textFontWeight="100"
+            android:padding="4dp"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

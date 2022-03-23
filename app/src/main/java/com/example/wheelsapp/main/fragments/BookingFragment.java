@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,9 +56,7 @@ public class BookingFragment extends WheelsFragment {
             businessViewModel = new ViewModelProvider(getActivity()).get(BusinessViewModel.class);
             businessViewModel.getBusinessLiveData()
                     .observe(getViewLifecycleOwner(), business -> {
-                        // do whatever with business
                      showToast("Welcome " + business.getName());
-                        businessViewModel.getAllBusinessBookings(business.getBusinessId());
                     });
 
             businessViewModel.getExceptionsLiveData()
@@ -65,6 +64,9 @@ public class BookingFragment extends WheelsFragment {
                             stopLoading();
                             showToast(e.getMessage());
                     });
+
+            businessViewModel.getBookingStatusLiveData()
+                    .observe(getViewLifecycleOwner(), this::showToast);
 
             businessViewModel.getBookingListLiveData()
                     .observe(getViewLifecycleOwner(), bookings -> {
@@ -82,10 +84,9 @@ public class BookingFragment extends WheelsFragment {
             stopLoading();
         }
 
+
     }
-
     class BookingsListRvAdapter extends RecyclerView.Adapter<BookingsListRvAdapter.BookingsListViewHolder> {
-
 
 
         private List<Booking> bookings;
@@ -115,12 +116,16 @@ public class BookingFragment extends WheelsFragment {
              TextView bookingDate;
              TextView bookingCustomerName;
              TextView serviceType;
+             Button decline; // 'Delete crud action'
+             Button approve; // @TODO
             public BookingsListViewHolder(@NonNull View itemView) {
                 super(itemView);
                 bookingDate = itemView.findViewById(R.id.booking_date);
                 bookingCustomerName = itemView.findViewById(R.id.booking_customer_name);
                 serviceType = itemView.findViewById(R.id.booking_service_type);
                 bookingImageView = itemView.findViewById(R.id.booking_image_view);
+                decline = itemView.findViewById(R.id.decline_btn);
+                approve = itemView.findViewById(R.id.approve_btn);
             }
 
 
@@ -130,7 +135,9 @@ public class BookingFragment extends WheelsFragment {
                 bookingDate.setText(booking.getTime());
                 Picasso.get().load(booking.getImageUrl()).into(bookingImageView);
 
-            }
+                decline.setOnClickListener((v) -> businessViewModel.declineBooking(booking));
+
+            }// stil here
         }
     }
 }

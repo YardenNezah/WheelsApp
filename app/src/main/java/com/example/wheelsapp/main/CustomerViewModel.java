@@ -44,7 +44,7 @@ public class CustomerViewModel extends ViewModel {
 
             @Override
             public void onFailure(Exception e) {
-                    exceptionsLiveData.postValue(e);
+                exceptionsLiveData.postValue(e);
             }
         });
     }

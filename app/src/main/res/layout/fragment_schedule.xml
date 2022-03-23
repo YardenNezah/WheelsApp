@@ -61,6 +61,7 @@
 
         <ImageView
            android:layout_width="100dp"
+            android:id="@+id/schedule_photo"
            android:layout_height="100dp"
            android:src="@drawable/ic_baseline_mail_24"/>
         <TextView
@@ -80,11 +81,12 @@
      <TextView
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:id="@+id/service_date"
+         android:id="@+id/schedule_date_tv"
          android:layout_gravity="end"
          android:textSize="12sp"
          android:text="01/01/1999"/>
       <EditText
+          android:id="@+id/schedule_type_et"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:hint="Enter Car Treatment type"
@@ -98,6 +100,7 @@
             <Button
                 android:textSize="12sp"
 
+                android:id="@+id/schedule_submit_btn"
                 android:layout_marginHorizontal="16dp"
                 android:backgroundTint="#1273DC"
                 android:textAllCaps="false"

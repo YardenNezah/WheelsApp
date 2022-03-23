@@ -59,43 +59,48 @@ public class LoginFragment extends WheelsFragment {
             if(isValidFields(new EditText[] {emailEt,passEt})) {
 
                 showLoading("Signing in...");
-
+                // client login
                 if(loginType.getCheckedRadioButtonId() == R.id.business_rb) {
-                    FirebaseManager.instance
-                            .signInCustomer(emailEt.getText().toString(), passEt.getText().toString()
-                                    , new WheelsExternalListener<WheelsCustomer>() {
-                                        @Override
-                                        public void onSuccess(WheelsCustomer customer) {
-                                            stopLoading();
-                                            Intent i = new Intent(getActivity(),MainActivity.class);
-                                            i.putExtra("customer", JsonHelper.toJson(customer));
-                                            startActivity(i);
-                                        }
-
-                                        @Override
-                                        public void onFailure(Exception e) {
-                                            stopLoading();
-                                            Toast.makeText(getContext(),"No Corresponding Customer Found / Wrong Credentials",Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    });
-                }else {
-
+                    System.out.println("Business");
                     FirebaseManager.instance
                             .signInBusiness(emailEt.getText().toString(), passEt.getText().toString()
                                     , new WheelsExternalListener<WheelsBusiness>() {
                                         @Override
                                         public void onSuccess(WheelsBusiness business) {
+
                                             Intent i = new Intent(getActivity(),MainActivity.class);
                                             i.putExtra("business", JsonHelper.toJson(business));
                                             startActivity(i);
-                                            stopLoading();
+                                            if(getActivity()!=null)
+                                                getActivity().finish();
                                         }
 
                                         @Override
                                         public void onFailure(Exception e) {
                                             stopLoading();
                                             Toast.makeText(getContext(),"No Corresponding Business Found / Wrong Credentials",Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+                }else {
+
+                    FirebaseManager.instance
+                            .signInCustomer(emailEt.getText().toString(), passEt.getText().toString()
+                                    , new WheelsExternalListener<WheelsCustomer>() {
+                                        @Override
+                                        public void onSuccess(WheelsCustomer customer) {
+                                            Intent i = new Intent(getActivity(),MainActivity.class);
+                                            i.putExtra("customer", JsonHelper.toJson(customer));
+                                            startActivity(i);
+                                            stopLoading();
+                                            if(getActivity()!=null)
+                                                getActivity().finish();
+                                        }
+
+                                        @Override
+                                        public void onFailure(Exception e) {
+                                            stopLoading();
+                                            Toast.makeText(getContext(),"No Corresponding Client Found / Wrong Credentials",Toast.LENGTH_SHORT).show();
                                         }
                                     });
                 }

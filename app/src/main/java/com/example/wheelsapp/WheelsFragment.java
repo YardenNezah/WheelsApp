@@ -79,5 +79,10 @@ public abstract class WheelsFragment extends Fragment {
         return true;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
 
+        loadingDialog = null;
+    }
 }

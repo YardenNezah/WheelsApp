@@ -32,7 +32,7 @@ public class ScheduleFragment extends WheelsFragment {
 
     CalendarView calendarView;
 
-    TextView scheduleDateTv,businessNameTv;
+    TextView scheduleDateTv, businessNameTv;
     EditText scheduleType;
     ImageView scheduleImage;
     Button scheduleBtn;
@@ -41,7 +41,7 @@ public class ScheduleFragment extends WheelsFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_schedule,container,false);
+        return inflater.inflate(R.layout.fragment_schedule, container, false);
     }
 
     @Override
@@ -54,8 +54,8 @@ public class ScheduleFragment extends WheelsFragment {
         scheduleType = view.findViewById(R.id.schedule_type_et);
         scheduleBtn = view.findViewById(R.id.schedule_submit_btn);
         scheduleViewModel = new ViewModelProvider(this).get(ScheduleViewModel.class);
-        if(getArguments()!=null) {
-            WheelsBusiness business = JsonHelper.fromJson(getArguments().getString("business"),WheelsBusiness.class);
+        if (getArguments() != null) {
+            WheelsBusiness business = JsonHelper.fromJson(getArguments().getString("business"), WheelsBusiness.class);
             scheduleViewModel.setBusiness(business);
             businessNameTv.setText("Book treatment at: " + business.getName());
         }
@@ -71,8 +71,19 @@ public class ScheduleFragment extends WheelsFragment {
                 .observe(getViewLifecycleOwner(), s -> {
                     stopLoading();
                     showToast(s);
-                    NavHostFragment.findNavController(this)
-                            .popBackStack();
+                    Fragment exists = getParentFragmentManager().findFragmentByTag("businessesFragment");
+                    if (exists != null)
+                        getParentFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.nav_host_fragment_main, (BusinessesFragment) exists, "businessesFragment")
+                                .addToBackStack("businessesFragment")
+                                .commit();
+                    else
+                        getParentFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.nav_host_fragment_main, new BusinessesFragment(), "businessesFragment")
+                                .addToBackStack("businessesFragment")
+                                .commit();
                 });
         scheduleViewModel.getExceptionsLiveData()
                 .observe(getViewLifecycleOwner(), e -> {
@@ -80,26 +91,27 @@ public class ScheduleFragment extends WheelsFragment {
                     showToast(e.getMessage());
                 });
         scheduleBtn.setOnClickListener((v) -> {
-            if(scheduleViewModel.getBusiness() ==null || FirebaseAuth.getInstance().getCurrentUser()==null || FirebaseAuth.getInstance().getCurrentUser().getEmail()==null) {
+            if (scheduleViewModel.getBusiness() == null || FirebaseAuth.getInstance().getCurrentUser() == null || FirebaseAuth.getInstance().getCurrentUser().getEmail() == null) {
                 showToast("Unknown error has occurred please try again later");
                 return;
             }
-            if(scheduleViewModel.getScheduleBookingDate() == null) {
+            if (scheduleViewModel.getScheduleBookingDate() == null) {
                 showToast("Please pick a date");
                 return;
             }
-            if(scheduleViewModel.getScheduleBookingImageData() == null) {
+            if (scheduleViewModel.getScheduleBookingImageData() == null) {
                 showToast("Please upload photo of your vehicle");
                 return;
             }
 
-            if(isValidFields(new EditText[] {scheduleType})) {
+            if (isValidFields(new EditText[]{scheduleType})) {
                 showLoading("Booking treatment with " + scheduleViewModel.getBusiness().getName() + "..");
                 scheduleViewModel.bookTreatment(scheduleViewModel.getBusiness().getOwnerId(),
                         new Booking(scheduleViewModel.getBusiness().getOwnerId(),
                                 FirebaseAuth.getInstance().getUid(),
+                                scheduleViewModel.getScheduleBookingDate(),
                                 "15:30"
-                                ,FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@")[0],""));
+                                , FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@")[0], ""));
             }
         });
 
@@ -108,7 +120,7 @@ public class ScheduleFragment extends WheelsFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(data!=null) {
+        if (data != null) {
             Uri imageData = data.getData();
             scheduleImage.setImageURI(imageData);
             scheduleViewModel.setScheduleBookingImageData(imageData);

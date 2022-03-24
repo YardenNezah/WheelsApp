@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,9 @@ import com.example.wheelsapp.R;
 import com.example.wheelsapp.WheelsFragment;
 import com.example.wheelsapp.db.external.FirebaseManager;
 import com.example.wheelsapp.interfaces.WheelsExternalListener;
+import com.example.wheelsapp.interfaces.WheelsLocalListener;
 import com.example.wheelsapp.main.CustomerViewModel;
+import com.example.wheelsapp.models.Theme;
 import com.example.wheelsapp.models.WheelsBusiness;
 import com.example.wheelsapp.models.WheelsCustomer;
 import com.example.wheelsapp.utilities.JsonHelper;
@@ -39,6 +42,7 @@ public class BusinessesFragment extends WheelsFragment {
     RecyclerView rvBusinessList;
     BusinessListRvAdapter rvAdapter;
 
+    LinearLayout businesses_layout;
     private CustomerViewModel customerViewModel;
 
     @Override
@@ -54,15 +58,21 @@ public class BusinessesFragment extends WheelsFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rvBusinessList = view.findViewById(R.id.rvBusinessList);
+        businesses_layout = view.findViewById(R.id.layout_businessList);
         rvBusinessList.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        showLoading("Loading all businesses..");
         if (getActivity() != null) {
+            showLoading("Loading all businesses..");
             customerViewModel = new ViewModelProvider(getActivity()).get(CustomerViewModel.class);
-            customerViewModel.getCustomerLiveData()
-                    .observe(getViewLifecycleOwner(), customer -> {
-                        // do whatever with customer
-                        Toast.makeText(getContext(), "Welcome " + customer.getCustomerName(), Toast.LENGTH_SHORT).show();
+            customerViewModel.getThemeLiveData()
+                    .observe(getViewLifecycleOwner(), theme -> {
+                        if (theme != null)
+                            businesses_layout.setBackgroundColor(theme.getColor());
                     });
+            customerViewModel.listenForThemeUpdate(getActivity().getApplication(), theme -> {
+                if (theme != null)
+                    businesses_layout.setBackgroundColor(theme.getColor());
+            });
+
 
             customerViewModel.getExceptionsLiveData()
                     .observe(getViewLifecycleOwner(), e -> showToast(e.getMessage()));
@@ -129,8 +139,11 @@ public class BusinessesFragment extends WheelsFragment {
                 bookTreatment.setOnClickListener((v) -> {
                     Bundle bundle = new Bundle();
                     bundle.putString("business", JsonHelper.toJson(business));
-                    NavHostFragment.findNavController(BusinessesFragment.this)
-                            .navigate(R.id.action_businessesFragment_to_scheduleFragment,bundle);
+
+                    getParentFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.nav_host_fragment_main, ScheduleFragment.class, bundle, "scheduleFragment")
+                            .commit();
 
                 });
             }

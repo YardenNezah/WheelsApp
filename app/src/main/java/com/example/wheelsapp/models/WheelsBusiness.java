@@ -47,12 +47,11 @@ public class WheelsBusiness {
         this.phoneNumber = phoneNumber;
     }
 
-    @NonNull
     public String getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(@NonNull String ownerId) {
+    public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
 

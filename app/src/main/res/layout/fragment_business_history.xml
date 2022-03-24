@@ -4,15 +4,13 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
-
     <LinearLayout
         android:layout_width="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:background="#1273DC"
-        android:id="@+id/layout_bookingList"
+        android:id="@+id/layout_business_history_bookingList"
         android:gravity="center"
         android:orientation="vertical"
         android:layout_height="120dp">
@@ -34,32 +32,31 @@
             android:padding="4dp"
             android:layout_gravity="center"
             android:textColor="@color/white"
-            android:text="Business bookings list"/>
+            android:text="Business Bookings History"/>
 
     </LinearLayout>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@id/layout_bookingList"
+        app:layout_constraintTop_toBottomOf="@id/layout_business_history_bookingList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:textSize="24sp"
-        android:id="@+id/no_bookings_business"
+        android:id="@+id/no_bookings_history_business"
         android:layout_gravity="center"
         android:textColor="#757171"
         android:text="No Bookings yet"/>
 
-
     <androidx.recyclerview.widget.RecyclerView
-        tools:listitem="@layout/booking_item"
-        android:id="@+id/rvBookingList"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/no_bookings_business"
+        android:id="@+id/rvBusinessBookingsHistory"
+        tools:listitem="@layout/history_item"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/no_bookings_history_business"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

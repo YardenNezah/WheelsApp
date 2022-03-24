@@ -61,13 +61,13 @@ public class LoginFragment extends WheelsFragment {
                 showLoading("Signing in...");
                 // client login
                 if(loginType.getCheckedRadioButtonId() == R.id.business_rb) {
-                    System.out.println("Business");
+
                     FirebaseManager.instance
                             .signInBusiness(emailEt.getText().toString(), passEt.getText().toString()
                                     , new WheelsExternalListener<WheelsBusiness>() {
                                         @Override
                                         public void onSuccess(WheelsBusiness business) {
-
+                                            stopLoading();
                                             Intent i = new Intent(getActivity(),MainActivity.class);
                                             i.putExtra("business", JsonHelper.toJson(business));
                                             startActivity(i);
@@ -78,6 +78,7 @@ public class LoginFragment extends WheelsFragment {
                                         @Override
                                         public void onFailure(Exception e) {
                                             stopLoading();
+                                            System.out.println(e.getMessage());
                                             Toast.makeText(getContext(),"No Corresponding Business Found / Wrong Credentials",Toast.LENGTH_SHORT).show();
 
                                         }

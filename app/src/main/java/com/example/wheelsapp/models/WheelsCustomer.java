@@ -26,12 +26,12 @@ public class WheelsCustomer {
 
 
 
-    @NonNull
+
     public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(@NonNull String customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 

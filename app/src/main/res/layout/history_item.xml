@@ -18,7 +18,7 @@
 
         <ImageView
 
-            android:id="@+id/booking_image_view"
+            android:id="@+id/history_booking_image_view"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/ic_baseline_mail_24" />
@@ -29,7 +29,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/booking_service_type"
+                android:id="@+id/history_service_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
@@ -38,12 +38,13 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/booking_customer_name"
+                android:id="@+id/history_customer_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Client name"
                 android:padding="4dp"
-                android:textSize="14sp" />
+                android:text="Customer name"
+                android:textSize="12sp"
+                android:textStyle="normal" />
 
         </LinearLayout>
 
@@ -58,32 +59,32 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="wrap_content">
-
-        <Button
+        <TextView
+            android:id="@+id/history_booking_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01/01/1999"
+            android:textAlignment="center"
+            android:textFontWeight="100"
+            android:padding="4dp"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#234205"
             android:id="@+id/approve_btn"
-            android:text="Approve"/>
-        <Button
+            android:textStyle="bold"
+            android:text="Status"/>
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#812A2A"
-            android:id="@+id/decline_btn"
-            android:text="Decline"/>
-
-        <TextView
-            android:id="@+id/booking_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="01/01/1999"
+            android:id="@+id/status_text"
+            android:textColor="@android:color/holo_red_dark"
+            android:text="Declined"/>
 
 
-            android:textFontWeight="100"
-            android:padding="4dp"
-            android:textAlignment="center"
-            android:textSize="14sp"
-            android:textStyle="bold" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

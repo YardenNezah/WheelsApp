@@ -7,29 +7,30 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.wheelsapp.models.Booking;
-import com.example.wheelsapp.models.WheelsBusiness;
-import com.example.wheelsapp.models.WheelsCustomer;
 
 import java.util.List;
 
 @Dao
 public interface BookingsDao {
 
-    @Query("SELECT * from bookings WHERE businessId = :bid")
-    List<Booking> getAllBookingsForBusiness(String bid);
+    @Query("SELECT * from bookings WHERE customerId = :bid AND status = 'declined' ")
+    List<Booking> getCustomerDeclinedBookings(String bid);
 
-
-    @Query("SELECT * from bookings WHERE customerId=:cid")
-    List<Booking> getAllBookingsForCustomer(String cid);
+    @Query("SELECT * from bookings WHERE customerId = :bid AND status = 'approved' ")
+    List<Booking> getCustomerApprovedBookings(String bid);
 
     @Insert
     void insertBooking(Booking booking);
 
+    @Insert
+    void insertBookings(Booking... booking);
+
+
     @Query("SELECT * from bookings WHERE id =:bid")
     Booking getBooking(String bid);
+
     @Delete
     void deleteBooking(Booking booking);
-
 
     @Update
     void updateBooking(Booking booking);

@@ -7,37 +7,65 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "bookings")
 public class Booking {
 
+    public static final String APPROVED = "approved";
+    public static final String WAITING = "waiting";
+    public static final String DECLINED = "declined";
+
     @PrimaryKey
     @NonNull
-   private String id;
-   private String time;
-   private String customerId;
-   private String customerName;
-   private String serviceType;
-   private String businessId;
-   private String imageUrl;
+    private String id;
+    private String time;
+    private String date;
+    private String customerId;
+    private String customerName;
+    private String serviceType;
+    private String businessId;
+    private String imageUrl;
+    private String status;
 
-    public Booking(String businessId,String customerId, String time,String imageUrl, String customerName, String serviceType) {
+
+    public Booking(String businessId, String customerId, String time, String date, String imageUrl, String customerName, String serviceType) {
         this.time = time;
         this.imageUrl = imageUrl;
+        this.date = date;
         this.businessId = businessId;
         this.customerId = customerId;
         this.customerName = customerName;
         this.serviceType = serviceType;
+        this.status = WAITING;
     }
-    public Booking(String businessId,String customerId, String time, String customerName, String serviceType) {
-        this(businessId,customerId,time,"",customerName,serviceType);
+
+    public Booking(String businessId, String customerId, String date, String time, String customerName, String serviceType) {
+        this(businessId, customerId, date, time, "", customerName, serviceType);
     }
 
     // firebase
-    public Booking() {}
+    public Booking() {
+    }
 
-    public void setId(@NonNull String id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getBusinessId() {
         return businessId;
+    }
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getImageUrl() {
@@ -48,7 +76,7 @@ public class Booking {
         this.imageUrl = imageUrl;
     }
 
-    @NonNull
+
     public String getId() {
         return id;
     }

@@ -22,20 +22,24 @@
         <entry key="..\:/Users/razel/WheelsApp/app/src/main/res/layout/fragment_schedule.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_forgotpass.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_maps_business.xml" value="0.24166666666666667" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.24166666666666667" />
         <entry key="app/src/main/res/layout/activity_register_business.xml" value="0.24166666666666667" />
-        <entry key="app/src/main/res/layout/booking_item.xml" value="0.24166666666666667" />
+        <entry key="app/src/main/res/layout/booking_item.xml" value="0.18355407714843752" />
         <entry key="app/src/main/res/layout/business_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_business_bookings.xml" value="0.24166666666666667" />
+        <entry key="app/src/main/res/layout/fragment_business_history.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_business_list.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_businesses.xml" value="0.24166666666666667" />
         <entry key="app/src/main/res/layout/fragment_forgotpass.xml" value="0.10989583333333333" />
+        <entry key="app/src/main/res/layout/fragment_history.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.24166666666666667" />
         <entry key="app/src/main/res/layout/fragment_register_business.xml" value="0.24166666666666667" />
         <entry key="app/src/main/res/layout/fragment_register_client.xml" value="0.24166666666666667" />
-        <entry key="app/src/main/res/layout/fragment_schedule.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_schedule.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/history_item.xml" value="0.25213675213675213" />
+        <entry key="app/src/main/res/layout/settings_layout.xml" value="0.12606837606837606" />
       </map>
     </option>
   </component>

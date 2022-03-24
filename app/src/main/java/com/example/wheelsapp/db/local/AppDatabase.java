@@ -13,21 +13,18 @@ import com.example.wheelsapp.models.WheelsBusiness;
 import com.example.wheelsapp.models.WheelsCustomer;
 
 
-@Database(entities = {Booking.class, WheelsBusiness.class, WheelsCustomer.class, Theme.class},version = 2)
+@Database(entities = {Booking.class, WheelsBusiness.class, WheelsCustomer.class, Theme.class},version = 3)
 public abstract class AppDatabase extends RoomDatabase {
-
     private static AppDatabase instance;
-    abstract BookingsDao bookingsDao();
-    abstract BusinessDao businessDao();
-    abstract CustomerDao customerDao();
-    abstract ThemeDao themeDao();
+    public abstract BookingsDao bookingsDao();
+    public abstract ThemeDao themeDao();
 
     public static synchronized AppDatabase getInstance(Context context) {
         if(instance==null) {
-            instance = Room.databaseBuilder(context,AppDatabase.class,"wheelsDB").build();
+            instance = Room.databaseBuilder(context,AppDatabase.class,"wheelsDB")
+                    .fallbackToDestructiveMigration().build();
         }
         return instance;
     }
-
 
 }

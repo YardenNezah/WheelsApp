@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="#1273DC"
+        android:id="@+id/layout_customer_history_bookingList"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_height="120dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="Wheels"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textStyle="italic"
+            android:textSize="18sp"
+            android:padding="4dp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="Bookings History"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/waiting_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Waiting"
+
+        android:textAlignment="center"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_customer_history_bookingList" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvWaiting"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/reviewed_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/waiting_text"
+        tools:listitem="@layout/history_item" />
+
+    <TextView
+        android:id="@+id/reviewed_text"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toTopOf="@id/rvReviewed"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Reviewed"
+        android:textAlignment="center"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvWaiting" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvReviewed"
+        android:layout_width="0dp"
+
+        app:layout_constraintBottom_toTopOf="@id/settings_button"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reviewed_text"
+        tools:listitem="@layout/history_item" />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:id="@+id/settings_button"
+        android:backgroundTint="@color/color_theme_light"
+        android:text="Settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvReviewed" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
